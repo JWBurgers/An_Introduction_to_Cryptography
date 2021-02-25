@@ -204,9 +204,9 @@ For instance, suppose that you have typed an e-mail into your e-mail application
 A key mathematical operation to understand for modern cryptography, besides the modulo operation, is that of the **XOR operation**, or “exclusive or” operation. This operation takes as inputs two bits and yields as output another bit. The XOR operation will simply be denoted as "XOR". It yields 0 if the two bits are the same and 1 if the two bits are different. You can see the four possibilities below. 
 
 * 0 XOR 0 = 0
-* 0 XOR = 1
-* 1 XOR = 1
-* 1 XOR = 0
+* 0 XOR 1 = 1
+* 1 XOR 0 = 1
+* 1 XOR 1 = 0
 
 You can perform an XOR operation on two messages longer than a single bit by lining up the bits of those two messages and performing the XOR operation on each individual pair of bits. 
 
