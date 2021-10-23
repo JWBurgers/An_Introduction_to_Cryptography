@@ -93,7 +93,7 @@ Suppose that Bob intends to uniformly select a day from the last calendar year. 
 
 As long as we think Bob’s process will indeed be truly uniform, we should conclude that there is a 1/4 probability Bob selects a day in Summer. This is the **unconditional probability** of the randomly selected day being in Summer. 
 
-Suppose now that instead of uniformly drawing a calendar day, Bob only selects only selects uniformly from among those days on which the noon temperature at Crystal Lake (New Jersey) was 21 degrees Celcius or higher.  Given this additional information, what can we conclude about the probability that Bob will select a day in Summer?  
+Suppose now that instead of uniformly drawing a calendar day, Bob only selects uniformly from among those days on which the noon temperature at Crystal Lake (New Jersey) was 21 degrees Celcius or higher.  Given this additional information, what can we conclude about the probability that Bob will select a day in Summer?  
 
 We should really draw a different conclusion than before, even without any further specific information (e.g., the temperature at noon each day last calendar year). 
 
