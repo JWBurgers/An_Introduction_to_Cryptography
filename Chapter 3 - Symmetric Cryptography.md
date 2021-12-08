@@ -42,7 +42,7 @@ You can see a depiction of situation (1) in *Figure 1* below. Bob wants to send 
 
 Bob first encrypts the message M with the key K. He, then, sends the ciphertext C to Alice. Once Alice has received the ciphertext, she can decrypt it using the key K and read the plaintext. With a good encryption scheme, any attacker that intercepts the ciphertext C should not be able to learn anything of real significance about the message M.  
 
-You can see a depiction of situation (2) in *Figure 2* below. Bob wants prevent others from viewing certain information. A typical situation might be that Bob is an employee storing sensitive data on his computer, which neither outsiders nor his colleagues are supposed to read.  
+You can see a depiction of situation (2) in *Figure 2* below. Bob wants to prevent others from viewing certain information. A typical situation might be that Bob is an employee storing sensitive data on his computer, which neither outsiders nor his colleagues are supposed to read.  
 
 Bob encrypts the message M at time T0 with the key K to produce the ciphertext C. At time T1 he needs the message again, and decrypts the ciphertext C with the key K. Any attacker that might have come across the ciphertext C in a meantime should not have been able to deduce anything significant about M from it. 
 
