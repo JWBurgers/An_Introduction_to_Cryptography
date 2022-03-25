@@ -107,7 +107,7 @@ An overview of asymmetric encryption with the help of Bob and Alice is provided 
 
 Alice first creates a pair of keys, consisting of one public key (K<sub>P</sub>) and one private key (K<sub>S</sub>), where the “P” in K<sub>P</sub> stands for “public” and the “S” in K<sub>S</sub> for “secret”. She, then, distributes this public key freely to others. We will return to the details of this distribution process a little later. But for now assume that anyone, including Bob, can securely obtain Alice’s public key K<sub>P</sub>.
 
-At some later point, Bob wants to write a message M to Alice. As it includes sensitive information, however, he wants the contents to remain secret for everyone but Alice. So, Bob first encrypts his message M using P<sub>K</sub>. He then sends the resulting ciphertext C to Alice, who decrypts C with K<sub>S</sub> to produce the original message M.
+At some later point, Bob wants to write a message M to Alice. As it includes sensitive information, however, he wants the contents to remain secret for everyone but Alice. So, Bob first encrypts his message M using K<sub>P</sub>. He then sends the resulting ciphertext C to Alice, who decrypts C with K<sub>S</sub> to produce the original message M.
 
 *Figure 1: Asymmetric encryption*
 
