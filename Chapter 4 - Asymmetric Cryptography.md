@@ -37,7 +37,7 @@ So, Jim’s Sporting Goods would have to store a pair of keys for each customer,
 
 - Jim’s Sporting Goods would have to store thousands of pairs of keys, one set for each customer.
 - These keys would have to be properly secured, as they would be a sure fire target for hackers. Any breaches of security would require the repetition of costly key exchanges, either at special key exchange locations or by courier. 
-- Any customer of Jim’s Sporting Goods would have to safely store a pair of keys. Losses and thefts will occur, requiring a repetition of key exchanges. Customers would also have to also have to go through this process for any other online stores or other types of entities they wish to communicate with over the Internet.  
+- Any customer of Jim’s Sporting Goods would have to safely store a pair of keys. Losses and thefts will occur, requiring a repetition of key exchanges. Customers would also have to go through this process for any other online stores or other types of entities they wish to communicate with over the Internet.  
 
 These two main challenges just described were very fundamental concerns until the late 1970s. They were known as the **key distribution problem** and the **key management problem**, respectively. 
 
