@@ -280,7 +280,7 @@ While I have drawn a distinction between message authenticity and integrity in m
 
 Typically, you would want to guarantee both secrecy and authenticity in communication and, hence, encryption schemes and MAC schemes are typically used together. 
 
-An **authenticated encryption scheme** is scheme that combines encryption with a MAC in a highly secure manner. Specifically, it has to meet the standards for existential unforgeability as well as a very strong notion of secrecy, namely one that is resistant to **chosen-ciphertext attacks**.<sup>[4](#footnote4)</sup> 
+An **authenticated encryption scheme** is a scheme that combines encryption with a MAC in a highly secure manner. Specifically, it has to meet the standards for existential unforgeability as well as a very strong notion of secrecy, namely one that is resistant to **chosen-ciphertext attacks**.<sup>[4](#footnote4)</sup> 
 
 In order for an encryption scheme to be resistant to chosen-ciphertext attacks, it must meet the standards for **non-malleability**: that is, any modification of a ciphertext by an attacker should yield either an invalid ciphertext or one that decrypts to a plaintext having no relation to the original one.<sup>[5](#footnote5)</sup> 
 
