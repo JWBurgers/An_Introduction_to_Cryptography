@@ -2,7 +2,7 @@
 
 One of the two main branches of cryptography is symmetric cryptography. It includes encryption schemes as well as schemes concerned with authentication and integrity. Until the 1970s, all of cryptography would have consisted of symmetric encryption schemes. 
 
-The main discussion starts by looking at symmetric encryption schemes and making the crucial distinction between stream ciphers and block ciphers. We, then, turn to message authentication codes, which are schemes for ensuring message authenticity and integrity. Finally, we explore how symmetric encryption schemes and message authentication codes can be combined to ensure secure communication. 
+The main discussion starts by looking at symmetric encryption schemes and making the crucial distinction between stream ciphers and block ciphers. We, then, turn to message authentication codes, which are schemes for ensuring message integrity and authenticity. Finally, we explore how symmetric encryption schemes and message authentication codes can be combined to ensure secure communication. 
 
 Before starting, however, I want to briefly make some remarks on the Alice and Bob illustrations in this and the next chapter.
 
@@ -18,7 +18,7 @@ Following are five key points to keep in mind about examples involving Alice and
 1. They can easily be translated into examples with other types of actors such as companies or government organizations.  
 2. They can easily be extended to include three or more actors.
 3. In the examples, Bob and Alice are typically active participants in creating each message and in the application of cryptographic schemes on that message. But in reality, electronic communications are largely automated. When you visit a website using transport layer security, for example, the cryptography is typically all handled by your computer and the web server. 
-4. In the context of electronic communication, the “messages” that are sent across a communication channel are TCP/IP packets. These can belong to an e-mail, a Facebook message, a phone conversation, a file transfer, a website, a software upload, and so on. They are not messages in the traditional sense. Nevertheless, cryptographers will often simplify this reality by stating that the message is, for instance, an e-mail. 
+4. In the context of electronic communication, the “messages” that are sent across a communication channel are usually TCP/IP packets. These can belong to an e-mail, a Facebook message, a phone conversation, a file transfer, a website, a software upload, and so on. They are not messages in the traditional sense. Nevertheless, cryptographers will often simplify this reality by stating that the message is, for instance, an e-mail. 
 5. The examples typically focus on electronic communication, but they can also be extended to traditional forms of communication such as letters.
 
 
@@ -27,8 +27,8 @@ Following are five key points to keep in mind about examples involving Alice and
 We can loosely define a **symmetric encryption scheme** as any cryptographic scheme with three algorithms: 
 
 1. A **key generation algorithm**, which generates a private key.
-2. An **encryption algorithm**, which takes the private key and plaintext as inputs and outputs a ciphertext.
-3. A **decryption algorithm**, which takes the private key and the ciphertext as inputs and outputs the plaintext.
+2. An **encryption algorithm**, which takes the private key and a plaintext as inputs and outputs a ciphertext.
+3. A **decryption algorithm**, which takes the private key and the ciphertext as inputs and outputs the original plaintext.
 
 Typically an encryption scheme—whether symmetric or asymmetric—offers a template for encryption based on a core algorithm, rather than an exact specification. 
 
@@ -40,11 +40,11 @@ Symmetric encryption schemes are typically useful in two kinds of cases: (1) Tho
 
 You can see a depiction of situation (1) in *Figure 1* below. Bob wants to send a message M to Alice across a distance, but does not want others to be able to read that message. 
 
-Bob first encrypts the message M with the key K. He, then, sends the ciphertext C to Alice. Once Alice has received the ciphertext, she can decrypt it using the key K and read the plaintext. With a good encryption scheme, any attacker that intercepts the ciphertext C should not be able to learn anything of real significance about the message M.  
+Bob first encrypts the message M with the private key K. He, then, sends the ciphertext C to Alice. Once Alice has received the ciphertext, she can decrypt it using the key K and read the plaintext. With a good encryption scheme, any attacker that intercepts the ciphertext C should not be able to learn anything of real significance about the message M.  
 
 You can see a depiction of situation (2) in *Figure 2* below. Bob wants to prevent others from viewing certain information. A typical situation might be that Bob is an employee storing sensitive data on his computer, which neither outsiders nor his colleagues are supposed to read.  
 
-Bob encrypts the message M at time T0 with the key K to produce the ciphertext C. At time T1 he needs the message again, and decrypts the ciphertext C with the key K. Any attacker that might have come across the ciphertext C in a meantime should not have been able to deduce anything significant about M from it. 
+Bob encrypts the message M at time T<sub>0</sub> with the key K to produce the ciphertext C. At time T<sub>1</sub> he needs the message again, and decrypts the ciphertext C with the key K. Any attacker that might have come across the ciphertext C in a meantime should not have been able to deduce anything significant about M from it. 
 
 *Figure 1: Secrecy across space*
 
@@ -74,22 +74,28 @@ Suppose a dictionary *D* that equates all the letters of the English alphabet, i
     - Convert each m<sub>i</sub> to a letter according to *D*
     - Then combine m<sub>0</sub>, m<sub>1</sub>,….,m<sub>l</sub> to yield the original message m
 
-What makes the shift cipher a symmetric encryption scheme is that the same key is used both for the encryption and the decryption process. For instance, suppose that you want to encrypt the message “DOG” using the shift cipher and that you randomly selected 24 as a key. Encrypting the messag with this key would yield “BME”. The only way to retrieve the original message is by using the same key, 24, for the decryption process.  
+What makes the shift cipher a symmetric encryption scheme is that the same key is used for both the encryption and the decryption process. For instance, suppose that you want to encrypt the message “DOG” using the shift cipher, and that you randomly selected "24" as a key. Encrypting the message with this key would yield “BME”. The only way to retrieve the original message is by using the same key, "24", for the decryption process. 
+
+This Shift cipher is an example of a **monoalphabetic substitution cipher**: an encryption scheme where the ciphertext alphabet is fixed (i.e, only one alphabet is used). Until the 1700s, many applications of encryption relied heavily on monoalphabetic substitution ciphers, though often these were much more complex than the Shift cipher. You could, for instance, randomly select a letter from the alphabet for each original text letter under the constraint that each letter occurs only once in the ciphertext alphabet. That means you would have factorial 26 possible private keys, which was huge in the precomputer age. 
 
 Note that you will come across the term **cipher** a lot in cryptography. Be aware that this term has various meanings. In fact, I know of at least five distinct meanings of the term within cryptography. 
 
-In some cases, like here with the shift cipher, it refers to an encryption scheme. However, the term can also refer specifically to the encryption algorithm, the private key, or just the ciphertext of any such encryption scheme. 
+In some cases it refers to an encryption scheme, as it does in Shift cipher and monoalphabetic substitution cipher. However, the term can also refer specifically to the encryption algorithm, the private key, or just the ciphertext of any such encryption scheme. 
 
 Lastly, the term cipher can also refer to a core algorithm from which you can construct cryptographic schemes. These can include various encryption algorithms, but also other types of cryptographic schemes. This sense of the term becomes relevant in the context of block ciphers (see the section “Block Ciphers” below). 
 
-You may also come across the terms to “encipher” or to “decipher”. These terms are merely synonyms for encryption and decryption. 
+You may also come across the terms to **encipher** or to **decipher**. These terms are merely synonyms for encryption and decryption. 
 
 
 ## Brute force attacks and Kerckhoff's principle
 
-The shift cipher is a very insecure symmetric encryption scheme. An attacker could just attempt decryption of any ciphertext with all 26 possible keys to see which result makes sense. This type of attack, where the attacker is just cycling through keys to see what works, is known as a **brute force attack**. 
+The shift cipher is a very insecure symmetric encryption scheme, at least in the modern world.<sup>[1](#footnote1)</sup> An attacker could just attempt decryption of any ciphertext with all 26 possible keys to see which result makes sense. This type of attack, where the attacker is just cycling through keys to see what works, is known as a **brute force attack** or **exhaustive key search**. 
 
-For any encryption scheme to meet a minimal notion of security, it must have a set of possible keys, or **keyspace**, which is so large that brute-force attacks are infeasible. This is known as the **sufficient key space principle**. A similar principle typically applies in different types of cryptographic schemes. 
+For any encryption scheme to meet a minimal notion of security, it must have a set of possible keys, or **keyspace**, which is so large that brute-force attacks are infeasible. All modern encryption schemes meet this standard. It is known as the **sufficient key space principle**. A similar principle typically applies in different types of cryptographic schemes. 
+
+To get a feel for the massive key space size in modern encryption schemes, suppose that a file has been encrypted with a 128-bit using the advanced encryption standard. This means an attacker has a set of 2<sup>128</sup> keys that she needs to cycle through for a brute force attack. A chance of 0.78% of success with this strategy would require the attacker to cycle through roughly 2.65 x 10<sup>36</sup> keys. 
+
+Suppose we optimistically assume that an attacker can attempt 10 quadrillion keys per second (i.e., 10<sup>16</sup> keys per second). To test 0.78% of all keys in the key space, her attack would have to last 2.65 x 10<sup>20</sup> seconds. This is about 8.4 trillion years. So even a brute force attack by an absurdly powerful adversary is not realistic with a modern 128-bit encryption scheme. This is the sufficient key space principle at play.     
 
 Is the shift cipher more secure if the attacker does not know the encryption algorithm? Perhaps, but not by much.
 
@@ -99,22 +105,22 @@ The idea that the security of a symmetric encryption scheme can only rely on the
 
 As originally intended by Kerckhoffs, the principle only applies to symmetric encryption schemes. A more general version of the principle, however, also applies to all other modern-day types of cryptographic schemes: Any cryptographic scheme’s design must not be required to be secret in order for it to be secure; the secrecy can only extend to some strings(s) of information, typically a private key.
 
-Kerckhoffs’ principle is central to modern cryptography for four reasons.<sup>[1](#footnote1)</sup> First, there are only a limited number of cryptographic schemes for particular types of applications. For instance, most modern symmetric encryption applications use the Rijndael cipher. So your secrecy regarding a scheme’s design is just very limited. There is, however, much more flexibility in keeping some private key for the Rijndael cipher secret. 
+Kerckhoffs’ principle is central to modern cryptography for four reasons.<sup>[2](#footnote2)</sup> First, there are only a limited number of cryptographic schemes for particular types of applications. For instance, most modern symmetric encryption applications use the Rijndael cipher. So your secrecy regarding a scheme’s design is just very limited. There is, however, much more flexibility in keeping some private key for the Rijndael cipher secret. 
 
-Second, it is easier to replace some string of information than an entire cryptographic scheme. Suppose that the employees of a company all have the same encryption software, and that every two employees have a private key to communicate confidentially. Key compromises are a hassle, but at least the company could keep the software. If the company were relying on the secrecy of the scheme, then any breach of that secrecy would require replacing all the software.  
+Second, it is easier to replace some string of information than an entire cryptographic scheme. Suppose that the employees of a company all have the same encryption software, and that every two employees have a private key to communicate confidentially. Key compromises are a hassle in this scenario, but at least the company could keep the software with such security breaches. If the company were relying on the secrecy of the scheme, then any breach of that secrecy would require replacing all the software.  
 
-Third, Kerckhoffs’ principle allows for standardization and compatibility between users of cryptographic schemes. This has massive benefits for efficiency. For instance, it is difficult to imagine how millions of people can securely connect to Google’s web servers each day, if that security required keeping cryptographic schemes secret.  
+Third, Kerckhoffs’ principle allows for standardization and compatibility between users of cryptographic schemes. This has massive benefits for efficiency. For instance, it is difficult to imagine how millions of people could securely connect to Google’s web servers each day, if that security required keeping cryptographic schemes secret.  
 
-Fourth, Kerckhoff’s principle allows for the public scrutiny of cryptographic schemes. This can greatly enhance the security of any scheme. The same type of wisdom of the crowds principle is at play here as in the building of Linux (covered in Primer 1). 
+Fourth, Kerckhoff’s principle allows for the public scrutiny of cryptographic schemes. This type of scrutiny is absolutely necessary to achieve secure cryptographic schemes. Illustratively, the main core algorithm in symmetric cryptography, the Rijndael cipher, was the result of a competition organized by the National Institute of Standards and Technology between 1997 and 2000. 
 
 Any system that attempts to achieve **security by obscurity** is one that relies on keeping the details of its design and/or implementation secret. In cryptography, this would be specifically a system that relies on keeping the design details of the cryptographic scheme secret. So security by obscurity is in direct contrast to Kerckhoffs’ principle.
 
-There are various notions of security for cryptographic schemes. Each **definition of cryptographic security** must specify (1) security goals, as well as (2) the capabilities of an attacker. Analyzing cryptographic schemes against one or more specific notions of security provides insights into their applications and limitations. 
+One can never state unambiguously that a cryptographic scheme is "secure" or "insecure." Instead, there are various notions of security for cryptographic schemes. Each **definition of cryptographic security** must specify (1) security goals, as well as (2) the capabilities of an attacker. Analyzing cryptographic schemes against one or more specific notions of security provides insights into their applications and limitations. 
 
-While we will not delve into all the details of the various notions of cryptographic security, you should know that two assumptions are universal to all cryptographic notions of security:
+While we will not delve into all the details of the various notions of cryptographic security, you should know that two assumptions are ubiquitous to all modern cryptographic notions of security pertaining to symmetric and asymmetric schemes (and in some form to other cryptographic primitives):
 
 * The attacker’s knowledge about the scheme conforms to Kerckhoffs’ principle.
-* The attacker cannot feasibly perform a brute force attack on the scheme. Specifically, the threat models of cryptographic notions of security typically do not allow brute force attacks, as they assume that these are not a relevant consideration. 
+* The attacker cannot feasibly perform a brute force attack on the scheme. Specifically, the threat models of cryptographic notions of security typically do not even allow brute force attacks, as they assume that these are not a relevant consideration. 
 
 
 ## Stream ciphers
@@ -127,7 +133,7 @@ First, a string the length of the plaintext is produced via a private key. This 
 
 Next, the key stream is mathematically combined with the plaintext to produce a ciphertext. This combination is typically an XOR operation. For decryption, you can just reverse the operation. (Note that A XOR B = B XOR A, in the case A and B are bit-strings. So the order to an XOR operation in a stream cipher does not matter for the result. This property is known as commutativity.) 
 
-A typical XOR stream cipher is depicted in *Figure 3*. You first take a key K and use it to generate a keystream. The keystream is, then, combined with the plaintext via an XOR operation to produce the ciphertext. Any agent that receives the ciphertext can easily decrypt it if they have the key K. All she needs to do is create a keystream as long as the ciphertext according to the specified procedure of the scheme and XOR it with the ciphertext.  
+A typical XOR stream cipher is depicted in *Figure 3*. You first take a private key K and use it to generate a keystream. The keystream is, then, combined with the plaintext via an XOR operation to produce the ciphertext. Any agent that receives the ciphertext can easily decrypt it if they have the key K. All she needs to do is create a keystream as long as the ciphertext according to the specified procedure of the scheme and XOR it with the ciphertext.  
 
 *Figure 3: An XOR stream cipher*
 
@@ -137,15 +143,52 @@ Be reminded that an encryption scheme is typically a template for encryption wit
 
 The shift cipher is an example of a very simple and insecure stream cipher. Using a single letter (the private key), you can produce a string of letters the length of the message (the keystream). This keystream is, then, combined with the plaintext via a modulo operation to produce a ciphertext. (This modulo operation can be simplified to an XOR operation when representing the letters in bits). 
 
-Another famous example of a stream cipher is the **one-time pad**. With the one-time pad, you simply create a string of random bits as long as the plaintext message and produce the ciphertext via the XOR operation. Hence, the key and the keystream are equivalent with a one-time pad. 
+Another famous example of a stream cipher is the **Vigenere cipher**, after Blaise de Vigenere who fully developed it at the end of the 16th century (though others had done a lot of preceding work). It is an example of a **polyalphabetic substitution cipher**: an encryption scheme where the ciphertext alphabet for a plaintext symbol changes depending on its position in the text. 
 
-While the shift cipher is very insecure, the one-time pad is very secure. Yet, it only has very limited practical relevance. Instead, the predominant stream ciphers used in practice are **pseudorandom stream ciphers**. Salsa20 and a closely related variant called ChaCha are examples of modern pseudorandom stream ciphers.
+As encryption gained popularity in Renaissance Europe, so did **cryptanalysis**—that is, the breaking of ciphertexts—particularly, using **frequency analysis**. The latter employs statistical regularities in our language to break ciphertexts. Even the most sophisticated monoalphabetic substition ciphers were no longer sufficient against frequency analysis by the 1700s, particularly in military and security settings. As the Vigenere cipher offered a significant advancement in security, it became popular in this period and widespread by the late 1700s.
+
+Informally speaking, the encryption scheme works as follows:
+
+1.	Select a multi-letter word as the private key
+2.	For any message, apply the shift cipher to each letter of the message using the corresponding letter in the key word as the shift
+3.	If you have cycled through the key word but still have not totally enciphered the plaintext, again apply the key word’s letters as a shift cipher to the corresponding letters in the remainder of the text
+4.	Continue this process until the entire message has been enciphered 
+
+To illustrate, suppose that your private key is GOLD and you want to encrypt the message "CRYPTOGRAPHY". In that case you would proceed as follows according to the Vigenere cipher:
+
+- c<sub>0</sub>  = [(2 + 6) Mod 26] = 8 = I
+- c<sub>1</sub>  = [(17 + 14) Mod 26] = 5 = F
+- c<sub>2</sub>  = [(24 + 11) Mod 26] = 9 = J
+- c<sub>3</sub>  = [(15 + 3) Mod 26] = 18 = S
+- c<sub>4</sub>  = [(19 + 6) Mod 26] = 25 = Z
+- c<sub>5</sub>  = [(14 + 14) Mod 26] = 2 = C
+- c<sub>6</sub>  = [(6 + 11) Mod 26] = 17 = R
+- c<sub>7</sub>  = [(17 + 3) Mod 26] = 20 = U
+- c<sub>8</sub>  = [(0 + 6) Mod 26] = 6 = G
+- c<sub>9</sub>  = [(15 + 14) Mod 26] = 3 = D
+- c<sub>10</sub> = [(7 + 11) Mod 26] = 18 = S
+- c<sub>11</sub> = [(24 + 3) Mod 26] = 1 = B
+- c = "IFJSZCRUGDSB"
+
+Another famous example of a stream cipher is the **one-time pad**. With the one-time pad, you simply create a string of random bits as long as the plaintext message and produce the ciphertext via the XOR operation. Hence, the private key and the keystream are equivalent with a one-time pad. 
+
+While the Shift cipher and Vigenere ciphers are very insecure in the modern age, the one-time pad is very secure. Probably the most famous application of the one-time pad was, at least until the 1980s, for the **Washington-Moscow hotline**.
+
+The hotline is a direct communications link between Washington and Moscow for urgent matters that was installed after the Cuban Missile Crisis. The technology for the has transformed over the years. Currently, it includes a direct fiber optic cable as well as two satellite links (for redundancy), which enable e-mail and text messaging. The link ends in various places in the US. The Pentagon, the White House, and Raven Rock Mountain are known endpoints. Contrary to popular opinion, the hotline has never involved telephones.  
+
+In essence, the one-time pad scheme worked as follows. Both Washington and Moscow would have two sets of random numbers. One set of random numbers, created by the Russians, pertained to encryption and decryption of any messages in the Russian language. One set of random numbers, created by the Americans, pertained to encryption and decryption of any messages in the English language. From time to time, more random numbers would be delived to the other side by trusted couriers. 
+
+Washington and Moscow were, then, able to communicate secretly by using these random numbers for creating one-time pads. Each time you needed to communicate, you would use the next portion of random numbers for your message.
+
+While highly secure, the one-time pad faces significant practical limitations: the key needs to be as long as the message and no part of a one-time pad can be re-used. This means that you need to keep track of where you are in the one-time pad, store a massive number of bits, and exchange random bits with your counterparties from time to time.   
+
+Due the practical challenges of the one-time pad, the predominant stream ciphers used in practice are **pseudorandom stream ciphers**. Salsa20 and a closely related variant called ChaCha are examples of commonly used pseudorandom stream ciphers.
 
 With these pseudorandom stream ciphers, you first randomly select a key K that is shorter than the length of the plaintext. Such a random key K is usually created by our computer on the basis of unpredictable data which it collects over time, such as the time between network messages, mouse movements, and so on. 
 
-This random key K is then inserted into an expansion algorithm which creates a pseudorandom key stream. You can specify precisely how long the keystream needs to be (e.g., 500 bits, 1000 bits, 1200 bits, 29,117 bits, and so on). 
+This random key K is then inserted into an expansion algorithm which creates a pseudorandom key stream as long as the message. You can specify precisely how long the keystream needs to be (e.g., 500 bits, 1000 bits, 1200 bits, 29,117 bits, and so on). 
 
-A pseudorandom keystream appears *as if* it was chosen completely randomly from the set of all strings with the same length. But that is, of course, not the case. 
+A pseudorandom keystream appears *as if* it was chosen completely randomly from the set of all strings with the same length. Hence, encryption with a pseudorandom keystream appears as if it had been done with a one-time pad. But that is, of course, not the case. 
 
 As our private key is shorter than the keystream and our expansionary algorithm needs to be deterministic in order for the encryption/decryption process to work, not every keystream of that particular length could have resulted as an output from our expansionary operation. 
 
@@ -156,6 +199,87 @@ Our definition of a stream cipher has two aspects: (1) a keystream as long as th
 Sometimes people define condition (1) more strictly, by asserting that the keystream must specifically be pseudorandom. This means that neither the shift cipher, nor the one-time pad would be considered stream ciphers. 
 
 In my view, defining condition (1) more broadly provides an easier way to organize encryption schemes. In addition, it means that we do not have to stop calling a particular encryption scheme a stream cipher just because we learn that it does not actually rely on pseudorandom keystreams. 
+
+
+## The RC4 stream cipher
+
+In order to have a sense of modern pseudorandom stream ciphers work, I will focus on the RC4 stream cipher. It is a pseudorandom stream cipher that was used in the WEP and WAP wireless access point security protocols as well as in TLS. As RC4 has many proven weaknesses, it has fallen into disfavor. In fact, the Internet Engineering Task Force now forbids the use of RC4 suites by client and server applications in all instances of TLS.<sup>[3](#footnote3)</sup> 
+
+In order to illustrate how the RC4 stream cipher works, I will first show an example with a baby RC4 cipher. Suppose our message is “SOUP.” Encryption with our baby RC4 cipher, then, proceeds in four steps.
+
+### Step 1
+
+First, define an array S with S[0] = 0 to S[7] = 7. An array here is simply means a mutable collection of values organized by an index, also called a list in some programming languages (e.g., Python). In this case, the index runs from 0 through 7, and the values also run from 0 to 7. So S is as follows:
+
+- S = [0,1,2,3,4,5,6,7]
+
+The values here are not ASCII numbers, but the decimal value representations of 1 byte strings. So the value 2 would equal 0000 0011. The length of the array S is, thus, 8 bytes. 
+
+### Step 2
+
+Second, define a key array K of 8 bytes length by choosing a key between 1 and 8 bytes (with no fractions of bytes permissible). As each byte is 8 bits, you can select any number between 0 and 255 for each byte of your key.   
+
+Suppose we choose our key k as [14,48,9], so that it has length of 3 bytes. Each index of our key array is, then, set according to the decimal value for that particular element of the key, in order. If you run through the entire key, start again at the beginning, until you have filled the 8 slots of the key array. Hence, our key array is as follows
+
+- K = [14,48,9,14,48,9,14,48]
+
+### Step 3
+
+Third, we will transform the array S using the key array K, in a process known as key scheduling. The process is as follows in pseudocode: 
+
+- Create variables j and i
+- Set the variable j = 0
+- For each i from 0 to 7:
+	- Set j = j + S[i] + K[i] mod 8
+	- Swap S[i] and S[j] 
+
+The transformation of array S is captured by *Table 1*. 
+
+To start, you can see the initial state of S as [0,1,2,3,4,5,6,7] with an initial value of 0 for j. This will be transformed using the key array [14,48,9,14,48,9,14,48]. 
+
+The for loop starts with i = 0. According to our pseudocode above, the new value of j becomes 6 (j = j + S[0] + K[0] mod 8 = 0 + 0 + 14 mod 8 = 6 mod 8). Swapping S[0] and S[6], the state of S after 1 round becomes [6,1,2,3,4,5,0,7]. 
+
+In the next row, i = 1. Going through the for loop again, j obtains a value of 7 (j = j + S[1] + K[1] mod 8 = 6 + 1 + 48 mod 8 = 55 mod 8 = 7 mod 8). Swapping S[1] and S[7] from the current state of S, [6,1,2,3,4,5,0,7], yields [6,7,2,3,4,5,0,1] after round 2. 
+
+We continue with this process until we produce the final row at the bottom for the array S, [6,4,1,0,3,7,5,2].  
+
+*Table 1: Key scheduling table*
+
+![Table 1: Key scheduling table](/Images/Table3-1.png "Table 1: Key scheduling table")
+
+### Step 4
+
+As a fourth step, we produce the keystream. This is the pseudorandom string of a length equal to the message we want to send. This is what will be used to encrypt the original message “SOUP.” As the keystream needs to be as long as the message, we need one that has 4 bytes. 
+
+The keystream is produced by the following pseudocode:
+
+- Create the variables j, i, and t
+- Set j = 0
+- For each i of the plaintext, starting with i = 1 and going until i = 4, each byte of the keystream is produced as follows:
+    - j = j + S[i] mod 8
+	- Swap S[i] and S[j]
+	- t = S[i] + S[j] mod 8
+	- The ith byte of the keystream = S[t]
+
+You can follow the calculations in *Table 2*. 
+
+The initial state of S = S = [6,4,1,0,3,7,5,2]. Setting i = 1, the value j becomes 4 (j = j + S[i] mod 8 = 0 + 4 mod 8 = 4). We, then, swap S[1] and S[4] to produce the transformation of S in the second row, [6,3,1,0,4,7,5,2]. The value t is, then, 7 (t = S[i] + S[j] mod 8 = 3 + 4 mod 8 = 7). Finally, the byte for the keystream is, then, S[7], or 2. 
+
+We can, then, continue to produce the other bytes until we have the following four bytes: 2, 6, 3, and 7. Each of these bytes can, then, be used to encrypt each letter of the plaintext, "SOUP". 
+
+To start, using an ASCII table, we can see that “SOUP” encoded by the decimal values of the underlying byte strings is “83 79 85 80”. Combination with the keystream “2 6 3 2” yields “85 85 88 82”, which stays the same after a modulo 256 operation. In ASCII, the ciphertext “85 85 88 82” equals “UUXR”. 
+
+What happens if the word to encrypt were longer than the array S? In that case, the array S just keeps transforming in this manner displayed above for every byte i of the plaintext, until we have a number of bytes in the keystream equal to the number of letters in the plaintext. 
+
+*Table 2: Keystream generation*
+
+![Table 2: Keystream generation](/Images/Table3-2.png "Table 2: Keystream generation")
+
+The example that we just discussed is only a watered down version of the RC4 stream cipher. The actual RC4 stream cipher has an S array of 256 bytes in length, not 8 bytes, and a key that can be between 1 and 256 bytes, not between 1 and 8 bytes. The key array and the keystreams are, then, all produced considering the 256 byte length of the S array. That calculations become immensely more complex, but the principles stay the same. 
+
+A stream cipher in which the key stream updates independently of the plaintext message or the ciphertext is a **synchronous stream cipher**. The keystream is only dependent on the key. Clearly, RC4 is an example of a synchronous stream cipher, as the keystream has no relationship with the plaintext or the ciphertext. All our previous stream ciphers, including the shift cipher, the Vigenere cipher, and the one-time pad, were also of the synchronous variety. 
+
+By contrast, an **asynchronous stream cipher** has a keystream that is produced by both the key and previous elements of the ciphertext. This type of cipher is also called a **self-synchronizing cipher**. 
 
 
 ## Block ciphers
@@ -186,7 +310,7 @@ Decryption is just the reverse process, although the recipient does need some re
 
 Though relatively straightforward, a block cipher with electronic code book mode lacks in security. This is because it leads to **deterministic encryption**. Any two identical 128-bit strings of data are encrypted exactly the same way. That information can be exploited.
 
-Instead, any encryption scheme constructed from a block cipher should be **probabilistic**: that is, the encryption of any message M, or any specific chunk of M, should generally yield a different outcome each time.<sup>[2](#footnote2)</sup> 
+Instead, any encryption scheme constructed from a block cipher should be **probabilistic**: that is, the encryption of any message M, or any specific chunk of M, should generally yield a different outcome each time.<sup>[4](#footnote4)</sup> 
 
 The **cipher block chaining mode** (**CBC mode**) is probably the most common mode used with a block cipher. The combination, if done right, produces a probabilistic encryption scheme. You can see a depiction of this mode of operation in Figure 6 below. 
 
@@ -222,7 +346,7 @@ Some stream ciphers only use a private key to create a keystream. For those stre
 
 The most popular modern block cipher is the **Rijndael cipher**. It was the winning entry out of fifteen submissions to a competition held by the National Institute of Standards and Technology (NIST) between 1997 and 2000 in order to replace an older encryption standard, the **data encryption standard** (**DES**).
 
-The Rijndael cipher can be used with different specifications for key lengths and block sizes, as well as in different modes of operation. The committee for the NIST competition adopted a constricted version of the Rijndael cipher—namely one which requires 128-bit block sizes and key lengths of either 128 bits, 192 bits, or 256 bits—as part of the **advanced encryption standard** (**AES**). This is really the main standard for symmetric encryption applications. It is so secure that even the NSA is apparently willing to use it with 256-bit keys for top secret documents.<sup>[3](#footnote3)</sup> 
+The Rijndael cipher can be used with different specifications for key lengths and block sizes, as well as in different modes of operation. The committee for the NIST competition adopted a constricted version of the Rijndael cipher—namely one which requires 128-bit block sizes and key lengths of either 128 bits, 192 bits, or 256 bits—as part of the **advanced encryption standard** (**AES**). This is really the main standard for symmetric encryption applications. It is so secure that even the NSA is apparently willing to use it with 256-bit keys for top secret documents.<sup>[5](#footnote5)</sup> 
 
 
 ## Clearing up the confusion
@@ -280,9 +404,9 @@ While I have drawn a distinction between message authenticity and integrity in m
 
 Typically, you would want to guarantee both secrecy and authenticity in communication and, hence, encryption schemes and MAC schemes are typically used together. 
 
-An **authenticated encryption scheme** is a scheme that combines encryption with a MAC in a highly secure manner. Specifically, it has to meet the standards for existential unforgeability as well as a very strong notion of secrecy, namely one that is resistant to **chosen-ciphertext attacks**.<sup>[4](#footnote4)</sup> 
+An **authenticated encryption scheme** is a scheme that combines encryption with a MAC in a highly secure manner. Specifically, it has to meet the standards for existential unforgeability as well as a very strong notion of secrecy, namely one that is resistant to **chosen-ciphertext attacks**.<sup>[6](#footnote6)</sup> 
 
-In order for an encryption scheme to be resistant to chosen-ciphertext attacks, it must meet the standards for **non-malleability**: that is, any modification of a ciphertext by an attacker should yield either an invalid ciphertext or one that decrypts to a plaintext having no relation to the original one.<sup>[5](#footnote5)</sup> 
+In order for an encryption scheme to be resistant to chosen-ciphertext attacks, it must meet the standards for **non-malleability**: that is, any modification of a ciphertext by an attacker should yield either an invalid ciphertext or one that decrypts to a plaintext having no relation to the original one.<sup>[7](#footnote7)</sup> 
 
 As an authenticated encryption scheme ensures that a ciphertext created by an attacker is always invalid (as the tag will not be verified), it meets the standards for resistance to chosen-ciphertext attacks. Interestingly, you can prove that an authenticated encryption scheme can always be created from the combination of an existentially unforgeable MAC and an encryption scheme that meets a less stronger notion of security, known as **chosen-plaintext-attack security**.
 
@@ -332,12 +456,16 @@ The communication session starts by Bob sending a ciphertext C<sub>0,B</sub> to 
 
 ## Notes
 
-<a name="footnote1">1</a>. Jonathan Katz and Yehuda Lindell, *Introduction to Modern Cryptography*, CRC Press (Boca Raton, FL: 2015), p. 7f. 
+<a name="footnote1">1</a>. According to Seutonius, a shift cipher with a constant key value of 3 was used by Julius Caeser in his military communications. So A would always become D, B always E, C always F, and so on. This particular version of the Shift cipher has, thus, become known as the **Caesar Cipher** (though it is not really a cipher in the modern sense of the word, as the key value is constant). The Caesar cipher may have been secure in the first century BC, if Rome’s enemies were very unfamiliar with encryption. But it clearly would not be a very secure scheme in modern times.
 
-<a name="footnote2">2</a>. The importance of probabilistic encryption was first emphasized by Shafi Goldwasser and Silvio Micali, “Probabilistic encryption,” *Journal of Computer and System Sciences*, 28 (1984), 270–99. 
+<a name="footnote2">2</a>. Jonathan Katz and Yehuda Lindell, *Introduction to Modern Cryptography*, CRC Press (Boca Raton, FL: 2015), p. 7f. 
 
-<a name="footnote3">3</a>. See NSA, "Commercial National Security Algorithm Suite", https://apps.nsa.gov/iaarchive/programs/iad-initiatives/cnsa-suite.cfm.
+<a name="footnote3">3</a>. Internet Engineering Task Force, "Prohibiting RC4 Cipher Suites," RFC 7465, available at https://tools.ietf.org/html/rfc7465. 
 
-<a name="footnote4">4</a>. The specific results discussed in this section are from Katz and Lindell, pp. 131–47.
+<a name="footnote4">4</a>. The importance of probabilistic encryption was first emphasized by Shafi Goldwasser and Silvio Micali, “Probabilistic encryption,” *Journal of Computer and System Sciences*, 28 (1984), 270–99. 
 
-<a name="footnote5">5</a>. Technically, the definition of chosen cipher text attacks is different than the notion of non-malleability. But you can show that those two notions of security are equivalent. 
+<a name="footnote5">5</a>. See NSA, "Commercial National Security Algorithm Suite", https://apps.nsa.gov/iaarchive/programs/iad-initiatives/cnsa-suite.cfm.
+
+<a name="footnote6">6</a>. The specific results discussed in this section are from Katz and Lindell, pp. 131–47.
+
+<a name="footnote7">7</a>. Technically, the definition of chosen cipher text attacks is different than the notion of non-malleability. But you can show that those two notions of security are equivalent. 
