@@ -338,7 +338,7 @@ Lets finish by providing an example of elements that can be “described by inte
 
 Elliptic curves are, for instance, crucial to Bitcoin. Any standard Bitcoin private and public key pair is selected from the set of points that is defined by the following elliptic curve: x<sup>3</sup> + 7 = y<sup>2</sup> mod 2<sup>256</sup> – 232 – 29 – 28 – 27 – 26 - 24 - 1 (the largest prime number less than 2<sup>256</sup>). The x-coordinate is the private key and the y-coordinate is your public key.
 
-The Bitcoin Block Chain registers transactions between what are typically transformations of a public keys. The value from these transactions can, then, be unlocked making digital signatures with the corresponding private keys. 
+The Bitcoin Block Chain registers transactions between what are typically transformations of public keys. The value from these transactions can, then, be unlocked making digital signatures with the corresponding private keys. 
 
 
 ### Cyclic groups
