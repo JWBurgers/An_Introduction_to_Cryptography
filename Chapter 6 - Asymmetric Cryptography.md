@@ -1,4 +1,4 @@
-# Asymmetric Cryptography
+# Chapter 6: Asymmetric Cryptography
 
 As with symmetric cryptography, asymmetric schemes can be used to ensure both secrecy and authentication. By contrast, however, these schemes employ two keys rather than one: a private and a public key.
 

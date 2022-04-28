@@ -1,4 +1,4 @@
-# Chapter 3: Symmetric Cryptography
+# Chapter 4: Symmetric Cryptography
 
 One of the two main branches of cryptography is symmetric cryptography. It includes encryption schemes as well as schemes concerned with authentication and integrity. Until the 1970s, all of cryptography would have consisted of symmetric encryption schemes. 
 
