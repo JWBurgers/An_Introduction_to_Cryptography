@@ -2,9 +2,11 @@
 
 One of the two main branches of cryptography is symmetric cryptography. It includes encryption schemes as well as schemes concerned with authentication and integrity. Until the 1970s, all of cryptography would have consisted of symmetric encryption schemes. 
 
-The main discussion starts by looking at symmetric encryption schemes and making the crucial distinction between stream ciphers and block ciphers. We, then, turn to message authentication codes, which are schemes for ensuring message integrity and authenticity. Finally, we explore how symmetric encryption schemes and message authentication codes can be combined to ensure secure communication. 
+The main discussion starts by looking at symmetric encryption schemes and making the crucial distinction between stream ciphers and block ciphers. We, then, turn to message authentication codes, which are schemes for ensuring message integrity and authenticity. Finally, we explore how symmetric encryption schemes and message authentication codes can be combined to ensure secure communication.
 
-Before starting, however, I want to briefly make some remarks on the Alice and Bob illustrations in this and the next chapter.
+This chapter discusses various symmetric cryptographic schemes from practice in passing. The next chapter offers a detailed exposition of a stream cipher and block cipher from practice, namely RC4 and AES respectively.  
+
+Before starting our discussion on symmetric cryptography, I want to briefly make some remarks on the Alice and Bob illustrations in this and subsequent chapters.
 
 
 ## Alice and Bob
@@ -48,11 +50,11 @@ Bob encrypts the message M at time T<sub>0</sub> with the key K to produce the c
 
 *Figure 1: Secrecy across space*
 
-![Figure 1: Secrecy across space](/Images/Figure3-1.png "Figure 1: Secrecy across space")
+![Figure 1: Secrecy across space](/Images/Figure4-1.png "Figure 1: Secrecy across space")
 
 *Figure 2: Secrecy across time*
 
-![Figure 2: Secrecy across time](/Images/Figure3-2.png "Figure 2: Secrecy across time")
+![Figure 2: Secrecy across time](/Images/Figure4-2.png "Figure 2: Secrecy across time")
 
 
 ## An example: The shift cipher
@@ -137,7 +139,7 @@ A typical XOR stream cipher is depicted in *Figure 3*. You first take a private 
 
 *Figure 3: An XOR stream cipher*
 
-![Figure 3: An XOR stream cipher](/Images/Figure3-3.png "Figure 3: An XOR stream cipher")
+![Figure 3: An XOR stream cipher](/Images/Figure4-3.png "Figure 3: An XOR stream cipher")
 
 Be reminded that an encryption scheme is typically a template for encryption with the same core algorithm, rather than an exact specification. By extension, a stream cipher is typically a template for encryption in which you can use keys of different lengths. Though the key length can impact some minor details of the scheme, it will not impact its essential form. 
 
@@ -201,87 +203,6 @@ Sometimes people define condition (1) more strictly, by asserting that the keyst
 In my view, defining condition (1) more broadly provides an easier way to organize encryption schemes. In addition, it means that we do not have to stop calling a particular encryption scheme a stream cipher just because we learn that it does not actually rely on pseudorandom keystreams. 
 
 
-## The RC4 stream cipher
-
-In order to have a sense of modern pseudorandom stream ciphers work, I will focus on the RC4 stream cipher. It is a pseudorandom stream cipher that was used in the WEP and WAP wireless access point security protocols as well as in TLS. As RC4 has many proven weaknesses, it has fallen into disfavor. In fact, the Internet Engineering Task Force now forbids the use of RC4 suites by client and server applications in all instances of TLS.<sup>[3](#footnote3)</sup> 
-
-In order to illustrate how the RC4 stream cipher works, I will first show an example with a baby RC4 cipher. Suppose our message is “SOUP.” Encryption with our baby RC4 cipher, then, proceeds in four steps.
-
-### Step 1
-
-First, define an array S with S[0] = 0 to S[7] = 7. An array here is simply means a mutable collection of values organized by an index, also called a list in some programming languages (e.g., Python). In this case, the index runs from 0 through 7, and the values also run from 0 to 7. So S is as follows:
-
-- S = [0,1,2,3,4,5,6,7]
-
-The values here are not ASCII numbers, but the decimal value representations of 1 byte strings. So the value 2 would equal 0000 0011. The length of the array S is, thus, 8 bytes. 
-
-### Step 2
-
-Second, define a key array K of 8 bytes length by choosing a key between 1 and 8 bytes (with no fractions of bytes permissible). As each byte is 8 bits, you can select any number between 0 and 255 for each byte of your key.   
-
-Suppose we choose our key k as [14,48,9], so that it has length of 3 bytes. Each index of our key array is, then, set according to the decimal value for that particular element of the key, in order. If you run through the entire key, start again at the beginning, until you have filled the 8 slots of the key array. Hence, our key array is as follows
-
-- K = [14,48,9,14,48,9,14,48]
-
-### Step 3
-
-Third, we will transform the array S using the key array K, in a process known as key scheduling. The process is as follows in pseudocode: 
-
-- Create variables j and i
-- Set the variable j = 0
-- For each i from 0 to 7:
-	- Set j = j + S[i] + K[i] mod 8
-	- Swap S[i] and S[j] 
-
-The transformation of array S is captured by *Table 1*. 
-
-To start, you can see the initial state of S as [0,1,2,3,4,5,6,7] with an initial value of 0 for j. This will be transformed using the key array [14,48,9,14,48,9,14,48]. 
-
-The for loop starts with i = 0. According to our pseudocode above, the new value of j becomes 6 (j = j + S[0] + K[0] mod 8 = 0 + 0 + 14 mod 8 = 6 mod 8). Swapping S[0] and S[6], the state of S after 1 round becomes [6,1,2,3,4,5,0,7]. 
-
-In the next row, i = 1. Going through the for loop again, j obtains a value of 7 (j = j + S[1] + K[1] mod 8 = 6 + 1 + 48 mod 8 = 55 mod 8 = 7 mod 8). Swapping S[1] and S[7] from the current state of S, [6,1,2,3,4,5,0,7], yields [6,7,2,3,4,5,0,1] after round 2. 
-
-We continue with this process until we produce the final row at the bottom for the array S, [6,4,1,0,3,7,5,2].  
-
-*Table 1: Key scheduling table*
-
-![Table 1: Key scheduling table](/Images/Table3-1.png "Table 1: Key scheduling table")
-
-### Step 4
-
-As a fourth step, we produce the keystream. This is the pseudorandom string of a length equal to the message we want to send. This is what will be used to encrypt the original message “SOUP.” As the keystream needs to be as long as the message, we need one that has 4 bytes. 
-
-The keystream is produced by the following pseudocode:
-
-- Create the variables j, i, and t
-- Set j = 0
-- For each i of the plaintext, starting with i = 1 and going until i = 4, each byte of the keystream is produced as follows:
-    - j = j + S[i] mod 8
-	- Swap S[i] and S[j]
-	- t = S[i] + S[j] mod 8
-	- The ith byte of the keystream = S[t]
-
-You can follow the calculations in *Table 2*. 
-
-The initial state of S = S = [6,4,1,0,3,7,5,2]. Setting i = 1, the value j becomes 4 (j = j + S[i] mod 8 = 0 + 4 mod 8 = 4). We, then, swap S[1] and S[4] to produce the transformation of S in the second row, [6,3,1,0,4,7,5,2]. The value t is, then, 7 (t = S[i] + S[j] mod 8 = 3 + 4 mod 8 = 7). Finally, the byte for the keystream is, then, S[7], or 2. 
-
-We can, then, continue to produce the other bytes until we have the following four bytes: 2, 6, 3, and 7. Each of these bytes can, then, be used to encrypt each letter of the plaintext, "SOUP". 
-
-To start, using an ASCII table, we can see that “SOUP” encoded by the decimal values of the underlying byte strings is “83 79 85 80”. Combination with the keystream “2 6 3 2” yields “85 85 88 82”, which stays the same after a modulo 256 operation. In ASCII, the ciphertext “85 85 88 82” equals “UUXR”. 
-
-What happens if the word to encrypt were longer than the array S? In that case, the array S just keeps transforming in this manner displayed above for every byte i of the plaintext, until we have a number of bytes in the keystream equal to the number of letters in the plaintext. 
-
-*Table 2: Keystream generation*
-
-![Table 2: Keystream generation](/Images/Table3-2.png "Table 2: Keystream generation")
-
-The example that we just discussed is only a watered down version of the RC4 stream cipher. The actual RC4 stream cipher has an S array of 256 bytes in length, not 8 bytes, and a key that can be between 1 and 256 bytes, not between 1 and 8 bytes. The key array and the keystreams are, then, all produced considering the 256 byte length of the S array. That calculations become immensely more complex, but the principles stay the same. 
-
-A stream cipher in which the key stream updates independently of the plaintext message or the ciphertext is a **synchronous stream cipher**. The keystream is only dependent on the key. Clearly, RC4 is an example of a synchronous stream cipher, as the keystream has no relationship with the plaintext or the ciphertext. All our previous stream ciphers, including the shift cipher, the Vigenere cipher, and the one-time pad, were also of the synchronous variety. 
-
-By contrast, an **asynchronous stream cipher** has a keystream that is produced by both the key and previous elements of the ciphertext. This type of cipher is also called a **self-synchronizing cipher**. 
-
-
 ## Block ciphers
 
 The first way that a **block cipher** is commonly understood is as something more primitive than a stream cipher: A core algorithm that performs a length-preserving transformation on a string of a suitable length with the aid of a key. This algorithm can be used for creating encryption schemes and perhaps other types of cryptographic schemes. 
@@ -292,7 +213,7 @@ A depiction of how a block cipher works can be seen in *Figure 4* below. A messa
 
 *Figure 4: A block cipher*
 
-![Figure 4: A block cipher](/Images/Figure3-4.png "Figure 4: A block cipher")
+![Figure 4: A block cipher](/Images/Figure4-4.png "Figure 4: A block cipher")
 
 A block cipher on its own is not an encryption scheme. But a block cipher can be used with various **modes of operation** to produce different encryption schemes. A mode of operation simply adds some additional operations outside the block cipher. 
 
@@ -300,7 +221,7 @@ To illustrate how this works, suppose a block cipher (BC) that requires a 128-bi
 
 *Figure 5: A block cipher with ECB mode*
 
-![Figure 5: A block cipher with ECB mode](/Images/Figure3-5.png "Figure 5: A block cipher with ECB mode")
+![Figure 5: A block cipher with ECB mode](/Images/Figure4-5.png "Figure 5: A block cipher with ECB mode")
 
 The process for electronic code book encryption with the block cipher is as follows. See if you can divide your plaintext message into 128-bit blocks. If not, add **padding** to the message, so that the result can be evenly divided by the block size of 128 bits. This is your data used for the encryption process.
 
@@ -316,7 +237,7 @@ The **cipher block chaining mode** (**CBC mode**) is probably the most common mo
 
 *Figure 6: A block cipher with CBC mode*
 
-![Figure 6: A block cipher with CBC mode](/Images/Figure3-6.png "Figure 6: A block cipher with CBC mode")
+![Figure 6: A block cipher with CBC mode](/Images/Figure4-6.png "Figure 6: A block cipher with CBC mode")
 
 Suppose the block size is again 128 bits. So to start, you would again need to assure that your original plaintext message receives the necessary padding.  
 
@@ -326,13 +247,13 @@ When finished, you send the encrypted message together with the unencrypted init
 
 This construction is much securer than electronic code book mode when used correctly. You should, first, ensure that the initialization vector is a random or pseudorandom string. In addition, you should use a different initialization vector each time you use this encryption scheme. 
 
-In other words, your initialization vector should be a random or pseudorandom nonce, where a **nonce** is a number that is only used once. If you keep this practice, then CBC mode with a block cipher ensures that any two identical plaintext blocks will generally be encrypted differently each time. 
+In other words, your initialization vector should be a random or pseudorandom nonce, where a **nonce** stands for "a number that is only used once." If you keep this practice, then CBC mode with a block cipher ensures that any two identical plaintext blocks will generally be encrypted differently each time. 
 
 Finally, lets turn our attention to **output feedback mode** (**OFB mode**). You can see a depiction of this mode in *Figure 7*.
 
 *Figure 7: A block cipher with OFB mode*
 
-![Figure 7: A block cipher with OFB mode](/Images/Figure3-7.png "Figure 7: A block cipher with OFB mode")
+![Figure 7: A block cipher with OFB mode](/Images/Figure4-7.png "Figure 7: A block cipher with OFB mode")
 
 With OFB mode you also select an initialization vector. But here, for the first block, the initialization vector is directly inserted into the block cipher with your key. The resulting 128-bits are, then, treated as a keystream. This keystream is XORed with the plaintext to produce the ciphertext for the block. For subsequent blocks, you use the keystream from the previous block as an input into the block cipher and repeat the steps. 
 
@@ -346,7 +267,9 @@ Some stream ciphers only use a private key to create a keystream. For those stre
 
 The most popular modern block cipher is the **Rijndael cipher**. It was the winning entry out of fifteen submissions to a competition held by the National Institute of Standards and Technology (NIST) between 1997 and 2000 in order to replace an older encryption standard, the **data encryption standard** (**DES**).
 
-The Rijndael cipher can be used with different specifications for key lengths and block sizes, as well as in different modes of operation. The committee for the NIST competition adopted a constricted version of the Rijndael cipher—namely one which requires 128-bit block sizes and key lengths of either 128 bits, 192 bits, or 256 bits—as part of the **advanced encryption standard** (**AES**). This is really the main standard for symmetric encryption applications. It is so secure that even the NSA is apparently willing to use it with 256-bit keys for top secret documents.<sup>[5](#footnote5)</sup> 
+The Rijndael cipher can be used with different specifications for key lengths and block sizes, as well as in different modes of operation. The committee for the NIST competition adopted a constricted version of the Rijndael cipher—namely one which requires 128-bit block sizes and key lengths of either 128 bits, 192 bits, or 256 bits—as part of the **advanced encryption standard** (**AES**). This is really the main standard for symmetric encryption applications. It is so secure that even the NSA is apparently willing to use it with 256-bit keys for top secret documents.<sup>[5](#footnote5)</sup>
+
+The AES block cipher will be explained in detail in *Chapter 5*. 
 
 
 ## Clearing up the confusion
@@ -369,12 +292,12 @@ From this discussion, you should now understand *Figure 8*. It provides an overv
 
 *Figure 8: Overview of symmetric encryption schemes*
 
-![Figure 8: Overview of symmetric encryption schemes](/Images/Figure3-8.png "Figure 8: Overview of symmetric encryption schemes")
+![Figure 8: Overview of symmetric encryption schemes](/Images/Figure4-8.png "Figure 8: Overview of symmetric encryption schemes")
 
 
 ## Message authentication codes
 
-Encryption is concerned with secrecy. But cryptography is also concerned with broader themes, such as message integrity, authenticity, and non-repudiation. So called **message authentication codes** (MACs) are symmetric key cryptographic schemes that support authenticity and integrity in communications.
+Encryption is concerned with secrecy. But cryptography is also concerned with broader themes, such as message integrity, authenticity, and non-repudiation. So called **message authentication codes** (MACs) are symmetric key cryptographic schemes that support authenticity and integrity in communications. 
 
 Why is anything, but secrecy needed in communication? Suppose that Bob sends Alice a message using practically unbreakable encryption. Any attacker that intercepts this message will not be able to ascertain any significant insights regarding the contents. However, the attacker still has at least two other attack vectors available to her:
 
@@ -391,7 +314,7 @@ The process is depicted in *Figure 9*. To use a MAC, they would first generate a
 
 *Figure 9: Overview of symmetric encryption schemes*
 
-![Figure 9: Overview of symmetric encryption schemes](/Images/Figure3-9.png "Figure 9: Overview of symmetric encryption schemes")
+![Figure 9: Overview of symmetric encryption schemes](/Images/Figure4-9.png "Figure 9: Overview of symmetric encryption schemes")
 
 Due to existential unforgeability, an attacker cannot alter the message M in any way or create a message of her own with a valid tag. This is so, even if the attacker observes the tags of many messages between Bob and Alice that uses the same private key. At most, an attacker could block Alice from receiving the message M (a problem which cryptography cannot address). 
 
@@ -422,7 +345,16 @@ Alice now first checks whether the tag is valid given the ciphertext C and the k
 
 *Figure 10: An authenticated encryption scheme*
 
-![Figure 10: An authenticated encryption scheme](/Images/Figure3-10.png "Figure 10: An authenticated encryption scheme")
+![Figure 10: An authenticated encryption scheme](/Images/Figure4-10.png "Figure 10: An authenticated encryption scheme")
+
+
+## HMAC
+
+How are MACs created? While MACs can created via multiple methods, and common and efficient way to create them is via hash functions. 
+
+.....Still to be completed.....
+
+
 
 
 ## Secure communication sessions
@@ -451,7 +383,7 @@ The communication session starts by Bob sending a ciphertext C<sub>0,B</sub> to 
 
 *Figure 11: A secure communication session*
 
-![Figure 11: A secure communication session](/Images/Figure3-11.png "Figure 11: A secure communication sessesion")
+![Figure 11: A secure communication session](/Images/Figure4-11.png "Figure 11: A secure communication sessesion")
 
 
 ## Notes
