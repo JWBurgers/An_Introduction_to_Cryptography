@@ -347,14 +347,17 @@ Alice now first checks whether the tag is valid given the ciphertext C and the k
 
 ![Figure 10: An authenticated encryption scheme](/Images/Figure4-10.png "Figure 10: An authenticated encryption scheme")
 
+How are MACs created? While MACs can be created via multiple methods, and common and efficient way to create them is via cryptographic hash functions. 
 
-## HMAC
+We will introduce cryptographic hash functions more thoroughly in *Chapter 6*. For now, just know that a **hash function** is an efficiently computable function that takes inputs of arbitrary size and yields fixed length outputs. For example, the popular hash function **SHA-256** (secure hash algorithm 256) always generates a 256-bit output regardless of the size of the input. Some hash functions, such as SHA-256, have useful applications in cryptography. 
 
-How are MACs created? While MACs can created via multiple methods, and common and efficient way to create them is via hash functions. 
+The most common type of tag produced with a cryptographic hash function is the **hash-based message authenitcation code** (HMAC). The process is depicted in *Figure 11*. A party produces two distinct keys from a private key K, the innner key K<sub>1</sub> and outer key K<sub>2</sub>. The plaintext M or ciphertext C is, then, hashed together with the inner key. The result T' is, then, hashed with the outer key to produce the message tag T.
 
-.....Still to be completed.....
+There is a palette of hash functions that can be used to create an HMAC. The most commonly employed hash function is SHA-256. 
 
+*Figure 11: HMAC*
 
+![Figure 11: HMAC](/Images/Figure4-11.png "Figure 11: HMAC")
 
 
 ## Secure communication sessions
@@ -381,9 +384,9 @@ To illustrate how secure communication sessions work, suppose again Alice and Bo
 
 The communication session starts by Bob sending a ciphertext C<sub>0,B</sub> to Alice with a message tag T<sub>0,B</sub>. The ciphertext contains the message, as well as an identifier (BOB) and a sequence number (0). The tag T<sub>0,B</sub> is made over the entire ciphertext. In their subsequent communications, Alice and Bob maintain this protocol, updating fields as necessary. 
 
-*Figure 11: A secure communication session*
+*Figure 12: A secure communication session*
 
-![Figure 11: A secure communication session](/Images/Figure4-11.png "Figure 11: A secure communication sessesion")
+![Figure 12: A secure communication session](/Images/Figure4-12.png "Figure 12: A secure communication sessesion")
 
 
 ## Notes
