@@ -117,6 +117,11 @@ Fourth, Kerckhoff’s principle allows for the public scrutiny of cryptographic 
 
 Any system that attempts to achieve **security by obscurity** is one that relies on keeping the details of its design and/or implementation secret. In cryptography, this would be specifically a system that relies on keeping the design details of the cryptographic scheme secret. So security by obscurity is in direct contrast to Kerckhoffs’ principle.
 
+The ability of openess to bolster quality and security also extends more broadly to digital world than just cryptography. Free and open source Linux distributions such as Debian, for example, generally have several advantages over their Windows and MacOS counterparts in terms of privacy, stability, security, and flexibility. While that may have multiple causes, the most important principle is probably, as Eric Raymond phrased it in his famous essay "The Cathedral and the Bazaar," that "[g]iven enough eyeballs, all bugs are shallow.”<sup>[3](#footnote3)</sup> It is this wisdom of the crowds type principle that gave Linux its most significant success. 
+
+
+
+
 One can never state unambiguously that a cryptographic scheme is "secure" or "insecure." Instead, there are various notions of security for cryptographic schemes. Each **definition of cryptographic security** must specify (1) security goals, as well as (2) the capabilities of an attacker. Analyzing cryptographic schemes against one or more specific notions of security provides insights into their applications and limitations. 
 
 While we will not delve into all the details of the various notions of cryptographic security, you should know that two assumptions are ubiquitous to all modern cryptographic notions of security pertaining to symmetric and asymmetric schemes (and in some form to other cryptographic primitives):
@@ -395,7 +400,7 @@ The communication session starts by Bob sending a ciphertext C<sub>0,B</sub> to 
 
 <a name="footnote2">2</a>. Jonathan Katz and Yehuda Lindell, *Introduction to Modern Cryptography*, CRC Press (Boca Raton, FL: 2015), p. 7f. 
 
-<a name="footnote3">3</a>. Internet Engineering Task Force, "Prohibiting RC4 Cipher Suites," RFC 7465, available at https://tools.ietf.org/html/rfc7465. 
+<a name="footnote3">3</a>. Eric Raymond, “The Cathedral and the Bazaar,” paper was presented at the Linux Kongress, Würzburg, Germany (May 27, 1997). There are a number of subsequent versions available as well as a book. My citations are from page 30 in the book: Eric Raymond, *The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary*, revised edn. (2001), O’Reilly: Sebastopol, CA.  
 
 <a name="footnote4">4</a>. The importance of probabilistic encryption was first emphasized by Shafi Goldwasser and Silvio Micali, “Probabilistic encryption,” *Journal of Computer and System Sciences*, 28 (1984), 270–99. 
 
