@@ -78,7 +78,9 @@ Suppose a dictionary *D* that equates all the letters of the English alphabet, i
 
 What makes the shift cipher a symmetric encryption scheme is that the same key is used for both the encryption and the decryption process. For instance, suppose that you want to encrypt the message “DOG” using the shift cipher, and that you randomly selected "24" as a key. Encrypting the message with this key would yield “BME”. The only way to retrieve the original message is by using the same key, "24", for the decryption process. 
 
-This Shift cipher is an example of a **monoalphabetic substitution cipher**: an encryption scheme where the ciphertext alphabet is fixed (i.e, only one alphabet is used). Until the 1700s, many applications of encryption relied heavily on monoalphabetic substitution ciphers, though often these were much more complex than the Shift cipher. You could, for instance, randomly select a letter from the alphabet for each original text letter under the constraint that each letter occurs only once in the ciphertext alphabet. That means you would have factorial 26 possible private keys, which was huge in the precomputer age. 
+This Shift cipher is an example of a **monoalphabetic substitution cipher**: an encryption scheme where the ciphertext alphabet is fixed (i.e, only one alphabet is used). Assuming that the decryption algorithm is deterministic, each symobl in the substitution ciphertext can at most pertain to one symbol in the plaintext. 
+
+Until the 1700s, many applications of encryption relied heavily on monoalphabetic substitution ciphers, though often these were much more complex than the Shift cipher. You could, for instance, randomly select a letter from the alphabet for each original text letter under the constraint that each letter occurs only once in the ciphertext alphabet. That means you would have factorial 26 possible private keys, which was huge in the precomputer age. 
 
 Note that you will come across the term **cipher** a lot in cryptography. Be aware that this term has various meanings. In fact, I know of at least five distinct meanings of the term within cryptography. 
 
@@ -119,9 +121,6 @@ Any system that attempts to achieve **security by obscurity** is one that relies
 
 The ability of openess to bolster quality and security also extends more broadly to digital world than just cryptography. Free and open source Linux distributions such as Debian, for example, generally have several advantages over their Windows and MacOS counterparts in terms of privacy, stability, security, and flexibility. While that may have multiple causes, the most important principle is probably, as Eric Raymond phrased it in his famous essay "The Cathedral and the Bazaar," that "[g]iven enough eyeballs, all bugs are shallow.”<sup>[3](#footnote3)</sup> It is this wisdom of the crowds type principle that gave Linux its most significant success. 
 
-
-
-
 One can never state unambiguously that a cryptographic scheme is "secure" or "insecure." Instead, there are various notions of security for cryptographic schemes. Each **definition of cryptographic security** must specify (1) security goals, as well as (2) the capabilities of an attacker. Analyzing cryptographic schemes against one or more specific notions of security provides insights into their applications and limitations. 
 
 While we will not delve into all the details of the various notions of cryptographic security, you should know that two assumptions are ubiquitous to all modern cryptographic notions of security pertaining to symmetric and asymmetric schemes (and in some form to other cryptographic primitives):
@@ -150,9 +149,9 @@ Be reminded that an encryption scheme is typically a template for encryption wit
 
 The shift cipher is an example of a very simple and insecure stream cipher. Using a single letter (the private key), you can produce a string of letters the length of the message (the keystream). This keystream is, then, combined with the plaintext via a modulo operation to produce a ciphertext. (This modulo operation can be simplified to an XOR operation when representing the letters in bits). 
 
-Another famous example of a stream cipher is the **Vigenere cipher**, after Blaise de Vigenere who fully developed it at the end of the 16th century (though others had done a lot of preceding work). It is an example of a **polyalphabetic substitution cipher**: an encryption scheme where the ciphertext alphabet for a plaintext symbol changes depending on its position in the text. 
+Another famous example of a stream cipher is the **Vigenere cipher**, after Blaise de Vigenere who fully developed it at the end of the 16th century (though others had done a lot of preceding work). It is an example of a **polyalphabetic substitution cipher**: an encryption scheme where the ciphertext alphabet for a plaintext symbol changes depending on its position in the text. By contrast to a monoalphabetic substitution cipher, ciphertext symbols can be associated with more than one plaintext symbol. 
 
-As encryption gained popularity in Renaissance Europe, so did **cryptanalysis**—that is, the breaking of ciphertexts—particularly, using **frequency analysis**. The latter employs statistical regularities in our language to break ciphertexts. Even the most sophisticated monoalphabetic substition ciphers were no longer sufficient against frequency analysis by the 1700s, particularly in military and security settings. As the Vigenere cipher offered a significant advancement in security, it became popular in this period and widespread by the late 1700s.
+As encryption gained popularity in Renaissance Europe, so did **cryptanalysis**—that is, the breaking of ciphertexts—particularly, using **frequency analysis**. The latter employs statistical regularities in our language to break ciphertexts, and was discovered by Arabic scholars already in the ninth centry. It is a technique that works particularly well with longer texts. And even the most sophisticated monoalphabetic substition ciphers were no longer sufficient against frequency analysis by the 1700s in Europe, particularly in military and security settings. As the Vigenere cipher offered a significant advancement in security, it became popular in this period and was widespread by the late 1700s.
 
 Informally speaking, the encryption scheme works as follows:
 
@@ -179,7 +178,7 @@ To illustrate, suppose that your private key is GOLD and you want to encrypt the
 
 Another famous example of a stream cipher is the **one-time pad**. With the one-time pad, you simply create a string of random bits as long as the plaintext message and produce the ciphertext via the XOR operation. Hence, the private key and the keystream are equivalent with a one-time pad. 
 
-While the Shift cipher and Vigenere ciphers are very insecure in the modern age, the one-time pad is very secure. Probably the most famous application of the one-time pad was, at least until the 1980s, for the **Washington-Moscow hotline**.
+While the Shift cipher and Vigenere ciphers are very insecure in the modern age, the one-time pad is very secure if used correctly. Probably the most famous application of the one-time pad was, at least until the 1980s, for the **Washington-Moscow hotline**.<sup>[4](#footnote4)</sup> 
 
 The hotline is a direct communications link between Washington and Moscow for urgent matters that was installed after the Cuban Missile Crisis. The technology for the has transformed over the years. Currently, it includes a direct fiber optic cable as well as two satellite links (for redundancy), which enable e-mail and text messaging. The link ends in various places in the US. The Pentagon, the White House, and Raven Rock Mountain are known endpoints. Contrary to popular opinion, the hotline has never involved telephones.  
 
@@ -187,9 +186,9 @@ In essence, the one-time pad scheme worked as follows. Both Washington and Mosco
 
 Washington and Moscow were, then, able to communicate secretly by using these random numbers for creating one-time pads. Each time you needed to communicate, you would use the next portion of random numbers for your message.
 
-While highly secure, the one-time pad faces significant practical limitations: the key needs to be as long as the message and no part of a one-time pad can be re-used. This means that you need to keep track of where you are in the one-time pad, store a massive number of bits, and exchange random bits with your counterparties from time to time.   
+While highly secure, the one-time pad faces significant practical limitations: the key needs to be as long as the message and no part of a one-time pad can be re-used. This means that you need to keep track of where you are in the one-time pad, store a massive number of bits, and exchange random bits with your counterparties from time to time. As a consequence, the one-time pad is not frequently used in practice.   
 
-Due the practical challenges of the one-time pad, the predominant stream ciphers used in practice are **pseudorandom stream ciphers**. Salsa20 and a closely related variant called ChaCha are examples of commonly used pseudorandom stream ciphers.
+Instead, the predominant stream ciphers used in practice are **pseudorandom stream ciphers**. Salsa20 and a closely related variant called ChaCha are examples of commonly used pseudorandom stream ciphers.
 
 With these pseudorandom stream ciphers, you first randomly select a key K that is shorter than the length of the plaintext. Such a random key K is usually created by our computer on the basis of unpredictable data which it collects over time, such as the time between network messages, mouse movements, and so on. 
 
@@ -236,7 +235,7 @@ Decryption is just the reverse process, although the recipient does need some re
 
 Though relatively straightforward, a block cipher with electronic code book mode lacks in security. This is because it leads to **deterministic encryption**. Any two identical 128-bit strings of data are encrypted exactly the same way. That information can be exploited.
 
-Instead, any encryption scheme constructed from a block cipher should be **probabilistic**: that is, the encryption of any message M, or any specific chunk of M, should generally yield a different outcome each time.<sup>[4](#footnote4)</sup> 
+Instead, any encryption scheme constructed from a block cipher should be **probabilistic**: that is, the encryption of any message M, or any specific chunk of M, should generally yield a different outcome each time.<sup>[5](#footnote5)</sup> 
 
 The **cipher block chaining mode** (**CBC mode**) is probably the most common mode used with a block cipher. The combination, if done right, produces a probabilistic encryption scheme. You can see a depiction of this mode of operation in Figure 6 below. 
 
@@ -272,7 +271,7 @@ Some stream ciphers only use a private key to create a keystream. For those stre
 
 The most popular modern block cipher is the **Rijndael cipher**. It was the winning entry out of fifteen submissions to a competition held by the National Institute of Standards and Technology (NIST) between 1997 and 2000 in order to replace an older encryption standard, the **data encryption standard** (**DES**).
 
-The Rijndael cipher can be used with different specifications for key lengths and block sizes, as well as in different modes of operation. The committee for the NIST competition adopted a constricted version of the Rijndael cipher—namely one which requires 128-bit block sizes and key lengths of either 128 bits, 192 bits, or 256 bits—as part of the **advanced encryption standard** (**AES**). This is really the main standard for symmetric encryption applications. It is so secure that even the NSA is apparently willing to use it with 256-bit keys for top secret documents.<sup>[5](#footnote5)</sup>
+The Rijndael cipher can be used with different specifications for key lengths and block sizes, as well as in different modes of operation. The committee for the NIST competition adopted a constricted version of the Rijndael cipher—namely one which requires 128-bit block sizes and key lengths of either 128 bits, 192 bits, or 256 bits—as part of the **advanced encryption standard** (**AES**). This is really the main standard for symmetric encryption applications. It is so secure that even the NSA is apparently willing to use it with 256-bit keys for top secret documents.<sup>[6](#footnote6)</sup>
 
 The AES block cipher will be explained in detail in *Chapter 5*. 
 
@@ -332,9 +331,9 @@ While I have drawn a distinction between message authenticity and integrity in m
 
 Typically, you would want to guarantee both secrecy and authenticity in communication and, hence, encryption schemes and MAC schemes are typically used together. 
 
-An **authenticated encryption scheme** is a scheme that combines encryption with a MAC in a highly secure manner. Specifically, it has to meet the standards for existential unforgeability as well as a very strong notion of secrecy, namely one that is resistant to **chosen-ciphertext attacks**.<sup>[6](#footnote6)</sup> 
+An **authenticated encryption scheme** is a scheme that combines encryption with a MAC in a highly secure manner. Specifically, it has to meet the standards for existential unforgeability as well as a very strong notion of secrecy, namely one that is resistant to **chosen-ciphertext attacks**.<sup>[7](#footnote7)</sup> 
 
-In order for an encryption scheme to be resistant to chosen-ciphertext attacks, it must meet the standards for **non-malleability**: that is, any modification of a ciphertext by an attacker should yield either an invalid ciphertext or one that decrypts to a plaintext having no relation to the original one.<sup>[7](#footnote7)</sup> 
+In order for an encryption scheme to be resistant to chosen-ciphertext attacks, it must meet the standards for **non-malleability**: that is, any modification of a ciphertext by an attacker should yield either an invalid ciphertext or one that decrypts to a plaintext having no relation to the original one.<sup>[8](#footnote8)</sup> 
 
 As an authenticated encryption scheme ensures that a ciphertext created by an attacker is always invalid (as the tag will not be verified), it meets the standards for resistance to chosen-ciphertext attacks. Interestingly, you can prove that an authenticated encryption scheme can always be created from the combination of an existentially unforgeable MAC and an encryption scheme that meets a less stronger notion of security, known as **chosen-plaintext-attack security**.
 
@@ -402,10 +401,12 @@ The communication session starts by Bob sending a ciphertext C<sub>0,B</sub> to 
 
 <a name="footnote3">3</a>. Eric Raymond, “The Cathedral and the Bazaar,” paper was presented at the Linux Kongress, Würzburg, Germany (May 27, 1997). There are a number of subsequent versions available as well as a book. My citations are from page 30 in the book: Eric Raymond, *The Cathedral and the Bazaar: Musings on Linux and Open Source by an Accidental Revolutionary*, revised edn. (2001), O’Reilly: Sebastopol, CA.  
 
-<a name="footnote4">4</a>. The importance of probabilistic encryption was first emphasized by Shafi Goldwasser and Silvio Micali, “Probabilistic encryption,” *Journal of Computer and System Sciences*, 28 (1984), 270–99. 
+<a name="footnote4">4</a>. Crypto Museum, "Washington-Moscow hotline," 2013, available at https://www.cryptomuseum.com/crypto/hotline/index.htm. 
 
-<a name="footnote5">5</a>. See NSA, "Commercial National Security Algorithm Suite", https://apps.nsa.gov/iaarchive/programs/iad-initiatives/cnsa-suite.cfm.
+<a name="footnote5">5</a> The importance of probabilistic encryption was first emphasized by Shafi Goldwasser and Silvio Micali, “Probabilistic encryption,” *Journal of Computer and System Sciences*, 28 (1984), 270–99. 
 
-<a name="footnote6">6</a>. The specific results discussed in this section are from Katz and Lindell, pp. 131–47.
+<a name="footnote6">6</a>. See NSA, "Commercial National Security Algorithm Suite", https://apps.nsa.gov/iaarchive/programs/iad-initiatives/cnsa-suite.cfm.
 
-<a name="footnote7">7</a>. Technically, the definition of chosen cipher text attacks is different than the notion of non-malleability. But you can show that those two notions of security are equivalent. 
+<a name="footnote7">7</a>. The specific results discussed in this section are from Katz and Lindell, pp. 131–47.
+
+<a name="footnote8">8</a>. Technically, the definition of chosen cipher text attacks is different than the notion of non-malleability. But you can show that those two notions of security are equivalent. 

@@ -174,3 +174,11 @@ Rounds 2 through 9 are just a repetition of round 1, *mutatis mutandis*. The fin
 - S<sub>10</sub> = S XOR K<sub>10</sub>
 
 The state S<sub>10</sub> is now set to C<sub>1</sub>, the first 128 bits of the ciphertext. Proceeding through the remaining 128-bit plaintext blocks yields the full ciphertext C. 
+
+### The operations of the Rijndael cipher
+
+What is the reasoning behind the different operations seen in the Rijndael cipher?
+
+Without entering into the details, encryption schemes are assessed on the basis of the extent they create confusion and diffusion. If the encryption scheme has a high degree of **confusion**, it means that the ciphertext looks drastically different than the plaintext. If the encryption scheme has a high degree of **diffusion**, it means that any small change to the plaintext produces a drastically different ciphertext. 
+
+The reasoning for the operations behind the Rijndael cipher is they produce both a high degree of confusion and diffusion. The confusion is produced by the Byte substitution operation, while the diffusion is produced by the shift rows and mix columns operations. 
