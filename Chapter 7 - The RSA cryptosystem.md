@@ -1,4 +1,4 @@
-# The RSA and Elliptic curve cryptosystems
+# The RSA cryptosystem
 
 While symmetric cryptography is usually fairly intuitive for most people, this is typically not the case with asymmetric cryptography. Though you are likely comfortable with the high-level description offered in the previous sections, you are probably wondering what precisely one-way functions are and how exactly they are used to construct asymmetric schemes. 
 
