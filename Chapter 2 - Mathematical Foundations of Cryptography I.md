@@ -80,7 +80,7 @@ A graphical depiction of Y is provided in *Figure 2*.
 
 ![Figure 2: Random variable Y.](/Images/Figure2-2.png "Figure 2: Random variable Y")
 
-For a final example, consider the random variable Z. It has the outcome set {1,3,7,11,12} and the following probability distribution: Pr (2) = 0.2; Pr (3) = 0.2; Pr (9) = 0.2; Pr (11) = 0.2; Pr (12) = 0.2. You can see it depicted in Figure 3. The random variable Z is, in contrast to Y, indeed a uniform variable, as all the probabilities for the possible values upon sampling are equal. 
+For a final example, consider the random variable Z. It has the outcome set {2,3,7,11,12} and the following probability distribution: Pr (2) = 0.2; Pr (3) = 0.2; Pr (9) = 0.2; Pr (11) = 0.2; Pr (12) = 0.2. You can see it depicted in Figure 3. The random variable Z is, in contrast to Y, indeed a uniform variable, as all the probabilities for the possible values upon sampling are equal. 
 
 *Figure 3: Random variable Z*
 
